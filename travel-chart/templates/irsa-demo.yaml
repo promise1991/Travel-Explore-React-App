@@ -1,0 +1,15 @@
+# This SA on EKS would have IAM Role annotation - Pod gets S3 access WITHOUT keys
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: travel-s3-sa
+  namespace: travel-helm
+  annotations:
+    # On EKS, you create IAM Role with this trust + annotate SA - no AWS keys in pod!
+    # eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/travel-s3-role
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/travel-s3-role-demo
+    # How it works on EKS:
+    # 1. EKS cluster has OIDC provider: oidc.eks.us-east-1.amazonaws.com/id/ABC...
+    # 2. IAM Role trust policy: Allow oidc provider to assume role if sub = system:serviceaccount:travel-helm:travel-s3-sa
+    # 3. Pod using this SA gets AWS creds via env var AWS_ROLE_ARN + token file
+    # 4. SDK automatically calls STS AssumeRoleWithWebIdentity -> temporary creds

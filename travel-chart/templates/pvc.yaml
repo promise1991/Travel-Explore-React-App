@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: travel-pvc
+  namespace: travel-helm
+spec:
+  accessModes:   # accessModes: How the volume can be accessed by Pods
+  - ReadWriteOnce   # ReadWriteOnce = only 1 Pod can write to this volume at a time. ReadWriteMany = multiple Pods can write to this volume at the same time.
+  resources:     # resources: How much storage you want to request from the cluster
+    requests:       # 
+      storage: 1Gi
+  storageClassName: standard  # the translator that converts PVC to EBS volume in AWS EKS is called a StorageClass. 
+  #In minikube, the default StorageClass is called "standard". In AWS EKS, the default StorageClass is called "gp2". You can check your cluster's StorageClasses with: kubectl get storageclass

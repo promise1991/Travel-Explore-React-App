@@ -1,0 +1,46 @@
+replicaCount: 3
+image:
+  repository: promiseopah/travel-explore
+  tag: prod
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: travel.prod.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+config:
+  NODE_ENV: production
+  API_URL: https://api.prod.example.com
+
+# Production ESO + IRSA
+serviceAccount:
+  name: travel-s3-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/travel-app-prod-s3-role
+
+secretStore:
+  provider: aws
+  region: us-east-1

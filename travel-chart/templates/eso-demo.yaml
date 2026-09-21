@@ -1,0 +1,38 @@
+apiVersion: external-secrets.io/v1
+kind: SecretStore
+metadata:
+  name: aws-secretsmanager
+  namespace: travel-helm
+spec:
+  provider:
+    aws:
+      service: SecretsManager
+      region: us-east-1
+      auth:
+        jwt:
+          serviceAccountRef:
+            name: travel-s3-sa
+            namespace: travel-helm
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: db-creds-from-aws
+  namespace: travel-helm
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: SecretStore
+    name: aws-secretsmanager
+  target:
+    name: db-creds
+    creationPolicy: Owner
+  data:
+  - secretKey: password
+    remoteRef:
+      key: travel-app/db-password
+      property: password
+  - secretKey: username
+    remoteRef:
+      key: travel-app/db-password
+      property: username

@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: travel-helm-ingress
+  namespace: travel-helm
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - travel.local
+    secretName: travel-tls
+  rules:
+  - host: travel.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: travel-helm-travel-chart
+            port:
+              number: 80
