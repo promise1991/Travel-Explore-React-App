@@ -1,6 +1,6 @@
 replicaCount: 3
 image:
-  repository: promiseopah/travel-explore
+     repository: 842746302640.dkr.ecr.us-east-1.amazonaws.com/travel-app
   tag: prod
   pullPolicy: IfNotPresent
 

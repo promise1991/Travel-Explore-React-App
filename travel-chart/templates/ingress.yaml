@@ -3,20 +3,22 @@ kind: Ingress
 metadata:
   name: travel-helm-ingress
   namespace: travel-helm
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/healthcheck-path: /
 spec:
-  ingressClassName: nginx
-  tls:
-  - hosts:
-    - travel.local
-    secretName: travel-tls
+  ingressClassName: alb   #  use AWS ALB controller to create real ALB
   rules:
-  - host: travel.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: travel-helm-travel-chart
-            port:
-              number: 80
+    - host: travel.local  # The host field specifies the hostname for which this Ingress resource will route traffic. In this case, it is set to "travel.local," which means that requests made to this hostname will be routed according to the rules defined in this Ingress resource.
+      http:
+        paths:
+          - path: /  # 
+            pathType: Prefix
+            backend:
+              service:
+                name: travel-helm-travel-chart
+                port:
+                  number: 80

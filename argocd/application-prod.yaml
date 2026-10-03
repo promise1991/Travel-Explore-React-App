@@ -6,9 +6,10 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/promiseopah/Travel-Explore-React-App
+    repoURL: https://github.com/promise1991/Travel-Explore-React-App.git
     targetRevision: main
-    path: [STRIPPED 92 bytes]:
+    path: travel-chart
+    helm:
       valueFiles:
         - values-prod.yaml
   destination:

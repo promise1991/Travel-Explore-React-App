@@ -1,0 +1,16 @@
+# k8s/karpenter-ec2nodeclass.yaml
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass     # This is a Karpenter EC2NodeClass manifest for defining the configuration of EC2 instances that will be provisioned by Karpenter in the Kubernetes cluster.
+metadata:
+  name: default   # The name of the EC2NodeClass resource, which can be referenced by Karpenter provisioners to create EC2 instances with the specified configuration.
+spec:
+  role: "KarpenterNodeRole-travel-eks-prod"  # from terraform karpenter module
+  amiFamily: AL2   # The Amazon Machine Image (AMI) family to use for the EC2 instances. In this case, it is set to AL2, which stands for Amazon Linux 2.
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "travel-eks-prod"  # The subnet selector terms define the criteria for selecting subnets in which the EC2 instances will be launched. In this case, it selects subnets that have a specific tag (karpenter.sh/discovery) with the value "travel-eks-prod". This ensures that the EC2 instances are provisioned in the appropriate subnets associated with the travel-eks-prod cluster.
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: "travel-eks-prod"  # The security group selector terms define the criteria for selecting security groups to associate with the EC2 instances. Similar to the subnet selector, it selects security groups that have a specific tag (karpenter.sh/discovery) with the value "travel-eks-prod". This ensures that the EC2 instances are associated with the appropriate security groups for the travel-eks-prod cluster.
+  tags:
+    karpenter.sh/discovery: "travel-eks-prod"
