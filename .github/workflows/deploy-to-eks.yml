@@ -21,11 +21,11 @@ jobs:
           REGISTRY: ${{ steps.ecr.outputs.registry }}
           TAG: ${{ github.sha }}
         run: |
-          docker build -t $REGISTRY/travel-app:$TAG .
+          docker build -t $REGISTRY/travel-app:$TAG.
           docker push $REGISTRY/travel-app:$TAG
       - name: Update Helm values-prod.yaml (GitOps)
         run: |
-          sed -i "s/tag:.*/tag: ${{ github.sha }}/" travel-chart/values-prod.yaml
+          sed -i -E "s/^([[:space:]]*)tag:.*/\1tag: ${{ github.sha }}/" travel-chart/values-prod.yaml
           cat travel-chart/values-prod.yaml | grep -A2 image:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
