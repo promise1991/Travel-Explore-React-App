@@ -1,7 +1,7 @@
 replicaCount: 3
 image:
   repository: 842746302640.dkr.ecr.us-east-1.amazonaws.com/travel-app
-  tag: b5eb9a43156a7a9aebd5d62fb2683d7b3c22a374
+  tag: e3062bc078a837019f7963b03ea4ef99f09f6a05
   pullPolicy: IfNotPresent
 service:
   type: ClusterIP
