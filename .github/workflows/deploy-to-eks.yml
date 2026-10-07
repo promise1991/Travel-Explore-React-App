@@ -21,7 +21,7 @@ jobs:
           REGISTRY: ${{ steps.ecr.outputs.registry }}
           TAG: ${{ github.sha }}
         run: |
-          docker build -t $REGISTRY/travel-app:$TAG.
+          docker build -t $REGISTRY/travel-app:$TAG .
           docker push $REGISTRY/travel-app:$TAG
       - name: Update Helm values-prod.yaml (GitOps)
         run: |
